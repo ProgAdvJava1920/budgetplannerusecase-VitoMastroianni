@@ -1,18 +1,21 @@
 package be.pxl.student.util;
 
+import be.pxl.student.BudgetPlanner;
 import be.pxl.student.entity.Account;
 import be.pxl.student.entity.Payment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.Buffer;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Util class to import csv file
@@ -20,47 +23,54 @@ import java.util.List;
 public class BudgetPlannerImporter {
 
     private static final Logger logger = LogManager.getLogger(BudgetPlannerImporter.class);
-    List<Account> accountList;
     private PathMatcher csvMatcher = FileSystems.getDefault().getPathMatcher("glob:**/*.csv");
+    private AccountMapper accountMapper = new AccountMapper();
+    private CounterAccountMapper counterAccountMapper = new CounterAccountMapper();
+    private PaymentMapper paymentMapper = new PaymentMapper();
+    private Map<String, Account> createdAccounts = new HashMap<>();
+    private EntityManager entityManager;
+
+    public BudgetPlannerImporter(EntityManager entityManager){
+        this.entityManager = entityManager;
+    }
 
     public void importCsv(Path path){
         if (!csvMatcher.matches(path)){
             logger.error("Invalid file: .csv expected. Provided: {}",path);
+            return;
         }
         if(!Files.exists(path)){
             logger.error("File {} does not exist.", path);
+            return;
         }
         try (BufferedReader reader = Files.newBufferedReader(path)){
-            List<Account> accounts = new ArrayList<>();
+            EntityTransaction tx = entityManager.getTransaction();
+            tx.begin();
             String line = null;
+            reader.readLine();
             while (( line = reader.readLine()) != null){
-                String[] attributes = line.split(",");
-                Account account = createAccount(attributes);
-                accounts.add(account);
+                try {
+                    Payment payment = paymentMapper.map(line);
+                    payment.setAccount(getOrCreateAccount(accountMapper.map(line)));
+                    payment.setCounterAccount(getOrCreateAccount(counterAccountMapper.map(line)));
+                    entityManager.persist(payment);
+                } catch (InvalidPaymentException e){
+                    logger.error("An error occured while reading file {}", path);
+                }
             }
+            tx.commit();
         } catch (IOException ioe) {
             logger.fatal("An error occured while reading file {}", path);
         }
     }
 
-    private Account createAccount(String[] metadata) {
-        String name = metadata[0];
-        String iban = metadata[1];
-        String counterAccountIban = metadata[2];
-        LocalDateTime transactionDate = LocalDateTime.parse(metadata[3]);
-        Float amount = Float.parseFloat(metadata[4]);
-        String currency = metadata[5];
-        String detail = metadata[6];
-
-        List<Payment> payments = new ArrayList<>();
-        Payment payment = new Payment(transactionDate, amount, currency, detail);
-        payments.add(payment);
-        Account account = new Account();
-        account.setIBAN(iban);
-        account.setName(name);
-        account.setPayments(payments);
-
-        return account;
+    private Account getOrCreateAccount(Account account) {
+       if (!createdAccounts.containsKey(account.getIBAN())){
+           return createdAccounts.get(account.getIBAN());
+       }
+       entityManager.persist(account);
+       createdAccounts.put(account.getIBAN(), account);
+       return account;
     }
 
 

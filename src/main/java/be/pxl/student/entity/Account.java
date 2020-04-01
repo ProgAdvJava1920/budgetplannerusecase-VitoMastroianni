@@ -1,43 +1,47 @@
 package be.pxl.student.entity;
 
+import javax.persistence.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Entity
+@Table(name = "Accounts")
+@NamedQueries(@NamedQuery(name = "findByName", query = "SELECT a FROM Account a Where a.name = :name"))
 public class Account {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(length = 34)
     private String IBAN;
+
+    @Column(length = 45)
     private String name;
+
+    @OneToMany(mappedBy = "account")
     private List<Payment> payments;
 
-    public String getIBAN() {
-        return IBAN;
-    }
+    public int getId() { return id; }
 
-    public void setIBAN(String IBAN) {
-        this.IBAN = IBAN;
-    }
+    public String getIBAN() { return IBAN; }
 
-    public String getName() {
-        return name;
-    }
+    public void setIBAN(String IBAN) { this.IBAN = IBAN; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getName() { return name; }
 
-    public List<Payment> getPayments() {
-        return payments;
-    }
+    public void setName(String name) { this.name = name; }
 
-    public void setPayments(List<Payment> payments) {
-        this.payments = payments;
-    }
+    public List<Payment> getPayments() { return payments; }
+
+    public void setPayments(List<Payment> payments) { this.payments = payments; }
 
     @Override
     public String toString() {
         return "Account{" +
-                "IBAN='" + IBAN + '\'' +
+                "id=" + id +
+                ", IBAN='" + IBAN + '\'' +
                 ", name='" + name + '\'' +
-                ", payments=[" + payments.stream().map(Payment::toString).collect(Collectors.joining(",")) + "]}";
+                '}';
     }
 }
