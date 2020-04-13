@@ -1,4 +1,4 @@
-package be.pxl.student.entity;
+package be.pxl.student.data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,7 +9,7 @@ public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @ManyToOne
     private Account account;
     @ManyToOne
@@ -37,7 +37,7 @@ public class Payment {
         this.counterAccount = counterAccount;
     }
 
-    public int getId() { return id; }
+    public Long getId() { return id; }
 
     public Account getAccount() { return account; }
 

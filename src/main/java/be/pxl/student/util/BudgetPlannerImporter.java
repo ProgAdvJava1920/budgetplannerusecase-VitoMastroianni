@@ -1,8 +1,7 @@
 package be.pxl.student.util;
 
-import be.pxl.student.BudgetPlanner;
-import be.pxl.student.entity.Account;
-import be.pxl.student.entity.Payment;
+import be.pxl.student.data.Account;
+import be.pxl.student.data.Payment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,10 +10,7 @@ import javax.persistence.EntityTransaction;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,7 +51,7 @@ public class BudgetPlannerImporter {
                     payment.setCounterAccount(getOrCreateAccount(counterAccountMapper.map(line)));
                     entityManager.persist(payment);
                 } catch (InvalidPaymentException e){
-                    logger.error("An error occured while reading file {}", path);
+                    logger.error("An error occured while mapping line {}", e.getMessage());
                 }
             }
             tx.commit();

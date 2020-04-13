@@ -5,17 +5,29 @@
 	<groupId>be.pxl.student</groupId>
 	<artifactId>BudgetPlanner</artifactId>
 	<version>SNAPSHOT-1.0</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>BudgetPlanner</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.target>11</maven.compiler.target>
-		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
 		<log4j2.version>2.13.0</log4j2.version>
 	</properties>
+
+	<build>
+		<finalName>Budgetplanner</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.tomee.maven</groupId>
+				<artifactId>tomee-maven-plugin</artifactId>
+				<version>8.0.1</version>
+			</plugin>
+
+		</plugins>
+	</build>
 
 	<dependencies>
 
@@ -63,5 +75,18 @@
 			<version>2.4.4</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-catalina</artifactId>
+			<version>7.0.42</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>8.0.1</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>

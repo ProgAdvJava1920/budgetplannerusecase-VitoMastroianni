@@ -1,6 +1,6 @@
 package be.pxl.student.util;
 
-import be.pxl.student.entity.Account;
+import be.pxl.student.data.Account;
 
 public class CounterAccountMapper {
 

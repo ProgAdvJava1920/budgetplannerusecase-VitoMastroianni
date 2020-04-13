@@ -1,8 +1,7 @@
-package be.pxl.student.entity;
+package be.pxl.student.data;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "Accounts")
@@ -11,18 +10,15 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+    private Long id;
     @Column(length = 34)
     private String IBAN;
-
     @Column(length = 45)
     private String name;
-
     @OneToMany(mappedBy = "account")
     private List<Payment> payments;
 
-    public int getId() { return id; }
+    public Long getId() { return id; }
 
     public String getIBAN() { return IBAN; }
 
