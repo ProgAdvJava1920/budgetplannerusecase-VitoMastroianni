@@ -4,8 +4,10 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "Accounts")
-@NamedQueries(@NamedQuery(name = "findByName", query = "SELECT a FROM Account a Where a.name = :name"))
+@NamedQueries({
+        @NamedQuery(name="findByName", query = "SELECT a FROM Account a WHERE a.name=:name"),
+        @NamedQuery(name="findByIBAN", query = "SELECT a FROM Account a WHERE a.IBAN=:iban")
+})
 public class Account {
 
     @Id
@@ -31,6 +33,11 @@ public class Account {
     public List<Payment> getPayments() { return payments; }
 
     public void setPayments(List<Payment> payments) { this.payments = payments; }
+
+    public void addPayment(Payment payment) {
+        payment.setAccount(this);
+        payments.add(payment);
+    }
 
     @Override
     public String toString() {

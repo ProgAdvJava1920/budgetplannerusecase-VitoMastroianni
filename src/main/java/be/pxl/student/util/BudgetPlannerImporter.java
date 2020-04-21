@@ -61,7 +61,7 @@ public class BudgetPlannerImporter {
     }
 
     private Account getOrCreateAccount(Account account) {
-       if (!createdAccounts.containsKey(account.getIBAN())){
+       if (createdAccounts.containsKey(account.getIBAN())){
            return createdAccounts.get(account.getIBAN());
        }
        entityManager.persist(account);
