@@ -1,6 +1,6 @@
 package be.pxl.student.util;
 
-import be.pxl.student.data.Payment;
+import be.pxl.student.entity.Payment;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

@@ -1,7 +1,7 @@
 package be.pxl.student.dao;
 
-import be.pxl.student.data.Account;
-import be.pxl.student.data.Payment;
+import be.pxl.student.entity.Account;
+import be.pxl.student.entity.Payment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,7 +11,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.security.auth.login.AccountNotFoundException;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class AccountDao {
     private EntityManager entityManager;
@@ -22,7 +21,7 @@ public class AccountDao {
         this.entityManager = entityManager;
     }
 
-    public Account findPaymentsByName(String name){
+    public Account findAccountByName(String name){
           TypedQuery<Account> findByName = entityManager.createNamedQuery("findByName", Account.class);
           findByName.setParameter("name", name);
           try{
@@ -61,26 +60,6 @@ public class AccountDao {
         return account;
     }
 
-    public void addPayment(String name, String counterAccountIBAN, float amount, String detail) throws AccountNotFoundException {
-        Account account = findPaymentsByName(name);
-        if (account == null) {
-            throw new AccountNotFoundException(name);
-        }
-        Account counterAccount = findAccountByIBAN(counterAccountIBAN);
-        if (counterAccount == null) {
-            counterAccount = new Account();
-            counterAccount.setIBAN(counterAccountIBAN);
-            counterAccount = createAccount(counterAccount);
-        }
-        Payment payment = new Payment();
-        payment.setCounterAccount(counterAccount);
-        payment.setAmount(amount);
-        payment.setCurrency("EUR");
-        payment.setDate(LocalDateTime.now());
-        payment.setDetail(detail);
-        account.addPayment(payment);
-        updateAccount(account);
-    }
 
 
 }

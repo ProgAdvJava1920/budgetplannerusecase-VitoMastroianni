@@ -1,7 +1,7 @@
 package be.pxl.student.util;
 
-import be.pxl.student.data.Account;
-import be.pxl.student.data.Payment;
+import be.pxl.student.entity.Account;
+import be.pxl.student.entity.Payment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

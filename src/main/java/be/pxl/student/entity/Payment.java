@@ -1,4 +1,4 @@
-package be.pxl.student.data;
+package be.pxl.student.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

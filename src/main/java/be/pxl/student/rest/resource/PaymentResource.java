@@ -1,14 +1,22 @@
 package be.pxl.student.rest.resource;
 
-public class PaymentCreateResource {
+import java.time.LocalDateTime;
+
+public class PaymentResource {
+    private Long id;
     private String counterAccount;
+    private LocalDateTime date;
     private float amount;
+    private String currency;
     private String detail;
-    private String date;
 
-    public String getDate() { return date; }
+    public Long getId() {
+        return id;
+    }
 
-    public void setDate(String date) { this.date = date; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getCounterAccount() {
         return counterAccount;
@@ -16,6 +24,14 @@ public class PaymentCreateResource {
 
     public void setCounterAccount(String counterAccount) {
         this.counterAccount = counterAccount;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setData(LocalDateTime date) {
+        this.date = date;
     }
 
     public float getAmount() {
@@ -26,6 +42,14 @@ public class PaymentCreateResource {
         this.amount = amount;
     }
 
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
     public String getDetail() {
         return detail;
     }
@@ -33,4 +57,5 @@ public class PaymentCreateResource {
     public void setDetail(String detail) {
         this.detail = detail;
     }
+
 }
