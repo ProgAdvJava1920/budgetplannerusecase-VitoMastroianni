@@ -33,11 +33,10 @@ public class AccountDao {
     }
 
     public Account findAccountByIBAN(String iban) {
-        TypedQuery<Account> query = entityManager.createNamedQuery("findByIBAN", Account.class);
-        LOGGER.info("query with iban [" + iban + "]");
-        query.setParameter("iban",iban);
+        TypedQuery<Account> findByIBAN = entityManager.createNamedQuery("findByIBAN", Account.class);
+        findByIBAN.setParameter("iban",iban);
         try {
-            return query.getSingleResult();
+            return findByIBAN.getSingleResult();
         }
         catch (NoResultException e) {
             return null;

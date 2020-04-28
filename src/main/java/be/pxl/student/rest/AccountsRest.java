@@ -1,17 +1,13 @@
 package be.pxl.student.rest;
 
-import be.pxl.student.dao.AccountDao;
-import be.pxl.student.entity.Account;
-import be.pxl.student.dao.EntityManagerUtil;
 import be.pxl.student.entity.Payment;
+import be.pxl.student.rest.resource.AccountCreateResource;
 import be.pxl.student.rest.resource.PaymentCreateResource;
 import be.pxl.student.rest.resource.PaymentResource;
 import be.pxl.student.service.AccountService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import javax.security.auth.login.AccountException;
 import javax.security.auth.login.AccountNotFoundException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -45,6 +41,16 @@ public class AccountsRest {
             accountService.addPayment(name,paymentCreateResource.getCounterAccount(),paymentCreateResource.getAmount(),paymentCreateResource.getDate(), paymentCreateResource.getDetail());
             return Response.created(UriBuilder.fromPath("/accounts/" + name).build()).build();
         } catch(AccountNotFoundException e) {
+            return Response.status(Response.Status.BAD_REQUEST).type(MediaType.TEXT_PLAIN).entity(e.getMessage()).build();
+        }
+    }
+
+    @POST
+    public Response addAccount(AccountCreateResource accountCreateResource) {
+        try {
+            accountService.addAccount(accountCreateResource.getName(), accountCreateResource.getIban());
+            return Response.created(UriBuilder.fromPath("/accounts/" + accountCreateResource.getName()).build()).build();
+        } catch(AccountException e) {
             return Response.status(Response.Status.BAD_REQUEST).type(MediaType.TEXT_PLAIN).entity(e.getMessage()).build();
         }
     }

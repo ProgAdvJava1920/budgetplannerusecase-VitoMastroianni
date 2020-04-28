@@ -1,4 +1,4 @@
-package be.pxl.student.dao;
+package be.pxl.student.util;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -24,9 +24,9 @@ public class EntityManagerUtil implements ServletContextListener {
     }
 
     public static EntityManager createEntityManager() {
-        if (emf == null) {
-            throw new IllegalStateException("Context is not initialized yet.");
+        if (emf != null) {
+            return emf.createEntityManager();
         }
-        return emf.createEntityManager();
+        return null;
     }
 }

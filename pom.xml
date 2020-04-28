@@ -18,7 +18,7 @@
 	</properties>
 
 	<build>
-		<finalName>Budgetplanner</finalName>
+		<finalName>BudgetPlanner</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.tomee.maven</groupId>
@@ -97,5 +97,11 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>3.3.3</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>

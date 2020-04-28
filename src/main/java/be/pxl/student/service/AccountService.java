@@ -1,11 +1,12 @@
 package be.pxl.student.service;
 
 import be.pxl.student.dao.AccountDao;
-import be.pxl.student.dao.EntityManagerUtil;
+import be.pxl.student.util.EntityManagerUtil;
 import be.pxl.student.entity.Account;
 import be.pxl.student.entity.Payment;
 import be.pxl.student.util.LocalDateConverter;
 
+import javax.security.auth.login.AccountException;
 import javax.security.auth.login.AccountNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -50,5 +51,15 @@ public class AccountService {
         payment.setCurrency("EUR");
         account.addPayment(payment);
         accountDao.updateAccount(account);
+    }
+    public void addAccount(String name, String iban) throws AccountException {
+        if(accountDao.findAccountByIBAN(iban) == null && accountDao.findAccountByName(name) == null){
+            Account newAccount = new Account();
+            newAccount.setName(name);
+            newAccount.setIBAN(iban);
+            accountDao.createAccount(newAccount);
+        } else {
+            throw new AccountException(String.format("Iban %s or name %s already exists", iban, name));
+        }
     }
 }
