@@ -53,13 +53,17 @@ public class AccountService {
         accountDao.updateAccount(account);
     }
     public void addAccount(String name, String iban) throws AccountException {
-        if(accountDao.findAccountByIBAN(iban) == null && accountDao.findAccountByName(name) == null){
-            Account newAccount = new Account();
-            newAccount.setName(name);
-            newAccount.setIBAN(iban);
-            accountDao.createAccount(newAccount);
-        } else {
-            throw new AccountException(String.format("Iban %s or name %s already exists", iban, name));
+        if (accountDao.findAccountByIBAN(iban) != null){
+            throw new AccountException(String.format("Iban %s already exists", iban));
         }
+
+        if (accountDao.findAccountByName(name) != null){
+            throw new AccountException(String.format("Name %s already exists", name));
+        }
+        Account newAccount = new Account();
+        newAccount.setName(name);
+        newAccount.setIBAN(iban);
+        accountDao.createAccount(newAccount);
     }
 }
+
