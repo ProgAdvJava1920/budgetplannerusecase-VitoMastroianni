@@ -4,6 +4,7 @@ package be.pxl.student.util;
 import org.apache.johnzon.mapper.Converter;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class LocalDateConverter implements Converter<LocalDate> {
     @Override
@@ -13,6 +14,7 @@ public class LocalDateConverter implements Converter<LocalDate> {
 
     @Override
     public LocalDate fromString(final String text) {
-        return LocalDate.parse(text);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return LocalDate.parse(text, formatter);
     }
 }

@@ -32,10 +32,10 @@ public class AccountService {
         Account account = accountDao.findAccountByName(name);
         Account counterAccount = accountDao.findAccountByIBAN(counterAccountIBAN);
         if (account == null) {
-            throw new AccountNotFoundException(name);
+            throw new AccountNotFoundException("Account not found: " + name);
         }
         if (counterAccount == null) {
-            throw new AccountNotFoundException(counterAccountIBAN);
+            throw new AccountNotFoundException("Counter account not found: " + counterAccountIBAN);
         }
 
         LocalDateConverter converter = new LocalDateConverter();

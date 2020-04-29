@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Label {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
 
     public Label(){
